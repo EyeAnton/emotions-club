@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Emotions Club — Anton Egorov</title>
+<meta name="description" content="Кейс: генерация интерактивных визуальных новелл. Один JSON от агента, один ComfyUI-флоу — фоны, персонажи с эмоциями, обложки и видеообложки в одном стиле.">
+<meta name="theme-color" content="#050a18">
+<meta property="og:title" content="Emotions Club — Anton Egorov">
+<meta property="og:description" content="Визуальные новеллы на двоих: один JSON от агента и один ComfyUI-флоу дают все ассеты истории в одном стиле.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://eyeanton.github.io/emotions-club/">
+<meta property="og:image" content="https://eyeanton.github.io/emotions-club/assets/story/cover.webp">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23050a18'/><text x='32' y='45' font-family='Arial,sans-serif' font-weight='600' font-size='36' text-anchor='middle' fill='%23ec2f1f'>A</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Lighthouse design system and the site shell (header, footer, CTA, .stats, .block, .reveal) come from the portfolio, same origin -->
+<link rel="stylesheet" href="/design-system.css">
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="style.css?v=4">
+</head>
+<body>
+
+<header class="top">
+  <a class="logo" href="/">Anton<span>.</span></a>
+  <nav class="tabs" aria-label="Разделы">
+    <a href="/" data-i18n="nav.home">Главная</a>
+    <a href="/projects.html" data-i18n="nav.work" aria-current="page">Проекты</a>
+    <a href="/contact.html" data-i18n="nav.contact">Контакты</a>
+  </nav>
+  <button class="lang" id="lang" type="button" aria-label="Switch language">EN</button>
+</header>
+
+<main>
+  <!-- ============ hero ============ -->
+  <section class="ec-hero">
+    <div class="aurora" aria-hidden="true"></div>
+    <a class="ec-crumb" href="/projects.html" data-i18n="crumb">← Все проекты</a>
+    <p class="eyebrow" data-i18n="hero.eyebrow">Кейс · AI-пайплайн</p>
+    <h1>Emotions <span class="t-grad">Club</span></h1>
+    <p class="lead" data-i18n="hero.lead">Интерактивные визуальные новеллы на двоих. Агент пишет один JSON на всю историю, а один ComfyUI-флоу превращает его в фоны, персонажей с эмоциями и обложки — в едином стиле и сразу с правильными именами файлов.</p>
+    <div class="hero-cta">
+      <a class="btn" href="#story" data-i18n="hero.story">Смотреть новеллу ↓</a>
+      <a class="btn ghost" href="#pipeline" data-i18n="hero.how">Как это сделано</a>
+    </div>
+
+    <div class="ec-cloud" aria-hidden="true">
+      <div class="ec-cloud-track" id="cloud"></div>
+    </div>
+  </section>
+
+  <!-- ============ facts ============ -->
+  <section class="ec-facts">
+    <dl class="ec-meta surface">
+      <div><dt data-i18n="meta.role">Роль</dt><dd>Senior CG Artist</dd></div>
+      <div><dt data-i18n="meta.company">Формат</dt><dd data-i18n="meta.companyV">In-house · NDA</dd></div>
+      <div><dt data-i18n="meta.when">Период</dt><dd>2025</dd></div>
+      <div><dt data-i18n="meta.tools">Инструменты</dt><dd>ComfyUI · RunningHub · LLM-агент · Kling · After Effects</dd></div>
+    </dl>
+    <div class="stats">
+      <div class="stat reveal"><b>29</b><span data-i18n="stat.novels">новелл в одном стиле</span></div>
+      <div class="stat reveal" style="--d:80ms"><b>~300</b><span data-i18n="stat.screens">экранов в одной истории</span></div>
+      <div class="stat reveal" style="--d:160ms"><b>1</b><span data-i18n="stat.json">JSON на всю новеллу → все ассеты</span></div>
+    </div>
+  </section>
+
+  <!-- ============ task ============ -->
+  <section class="block" id="task">
+    <div class="sec-head reveal">
+      <p class="eyebrow" data-i18n="task.eyebrow">Задача</p>
+      <h2 data-i18n="task.title">Новелла, которую проходят вдвоём</h2>
+      <p data-i18n="task.text">Каждая история — это сотни экранов, несколько локаций и целый актёрский состав. Новеллы выходили потоком, поэтому картинки нужно было производить как конвейер, а не рисовать каждую вручную.</p>
+    </div>
+    <div class="ec-cards">
+      <article class="ec-card surface reveal">
+        <span class="ec-num">01</span>
+        <h3 data-i18n="task.1t">Два игрока и актёрский состав</h3>
+        <p data-i18n="task.1d">Героиня и герой — это два реальных игрока. Вокруг них NPC: злодеи, горничные, правители, призраки. Все должны выглядеть как одна история.</p>
+      </article>
+      <article class="ec-card surface reveal" style="--d:80ms">
+        <span class="ec-num">02</span>
+        <h3 data-i18n="task.2t">Выбор меняет сцену</h3>
+        <p data-i18n="task.2d">На каждой развилке один игрок выбирает из трёх вариантов, другой ждёт. У каждой ветки свои фоны, у премиум-веток — отдельные катсцены.</p>
+      </article>
+      <article class="ec-card surface reveal" style="--d:160ms">
+        <span class="ec-num">03</span>
+        <h3 data-i18n="task.3t">Эмоции в каждой реплике</h3>
+        <p data-i18n="task.3d">Диалог держится на лицах: персонаж злится, смущается, улыбается. Набор эмоций генерируется сразу, и лицо остаётся тем же от первой сцены до финала.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ pipeline ============ -->
+  <section class="block" id="pipeline">
+    <div class="sec-head reveal">
+      <p class="eyebrow" data-i18n="pipe.eyebrow">Пайплайн</p>
+      <h2 data-i18n="pipe.title">Один JSON — вся новелла</h2>
+      <p data-i18n="pipe.text">Ручная работа осталась там, где она важна: в стиле и отборе. Всё остальное — от промптов до раскладки файлов по папкам — делает связка «агент + ComfyUI».</p>
+    </div>
+    <ol class="ec-flow">
+      <li class="reveal"><b data-i18n="pipe.1t">Сценарий</b><span data-i18n="pipe.1d">Сцены, ветки, описания персонажей и локаций</span></li>
+      <li class="reveal" style="--d:60ms"><b data-i18n="pipe.2t">Агент → JSON</b><span data-i18n="pipe.2d">Один файл с маркерами: промпт фона 1, персонаж 1, обложка…</span></li>
+      <li class="reveal" style="--d:120ms"><b data-i18n="pipe.3t">ComfyUI-флоу</b><span data-i18n="pipe.3d">Один флоу раскидывает маркеры по генеративным моделям</span></li>
+      <li class="reveal" style="--d:180ms"><b data-i18n="pipe.4t">Персонажи + эмоции</b><span data-i18n="pipe.4d">Базовый спрайт и набор эмоций с одним и тем же лицом</span></li>
+      <li class="reveal" style="--d:240ms"><b data-i18n="pipe.5t">Нейминг</b><span data-i18n="pipe.5d">Каждый файл сразу ложится на своё место под data.json</span></li>
+      <li class="reveal" style="--d:300ms"><b data-i18n="pipe.6t">Редактор и промо</b><span data-i18n="pipe.6d">Экраны собираются в редакторе, обложки оживают в видео</span></li>
+    </ol>
+
+    <div class="ec-code reveal">
+      <div class="ec-files surface">
+        <p class="ec-label" data-i18n="code.files">Ассеты одной новеллы</p>
+<pre>room_313/
+├─ data.json
+└─ assets/
+   ├─ cover.webp
+   ├─ cutscene.webp
+   ├─ character_01_base.webp   <i>player · Anna</i>
+   ├─ character_02_base.webp   <i>player · James</i>
+   ├─ character_03_base.webp   <i>npc · Intruder</i>
+   ├─ character_04_base.webp   <i>npc · Piers Lark</i>
+   ├─ scene_01_a.webp  scene_01_b.webp
+   ├─ scene_02_a.webp  …  scene_02_c.webp
+   └─ … scene_06_b.webp</pre>
+      </div>
+      <div class="ec-json surface">
+        <p class="ec-label" data-i18n="code.json">Экран в data.json ссылается на файл по имени</p>
+<pre>{
+  <k>"id"</k>: <s>"scene1_screen5"</s>,
+  <k>"type"</k>: <s>"dialog"</s>,
+  <k>"image"</k>: <s>"scene_01_a.webp"</s>,
+  <k>"actor"</k>: { <k>"playerId"</k>: <s>"player_fem_anna"</s> },
+  <k>"content"</k>: <s>"(mutters) Finally."</s>,
+  <k>"next"</k>: <s>"scene1_screen6"</s>
+}</pre>
+      </div>
+    </div>
+    <!-- TODO: JSON с маркерами из файла генерации ComfyUI (пользователь найдёт вручную) и скриншот флоу -->
+    <!-- TODO: видео пайплайна (на доработку) -->
+  </section>
+
+  <!-- ============ one story in a row ============ -->
+  <section class="block" id="story">
+    <div class="sec-head reveal">
+      <p class="eyebrow" data-i18n="story.eyebrow">Одна новелла целиком</p>
+      <h2>Room 313</h2>
+      <p data-i18n="story.text">Триллер на шесть сцен: отель, подставное убийство и старый враг. Все фоны истории подряд — от коридора у номера до утреннего аэропорта. Свет, палитра и манера не плывут от сцены к сцене.</p>
+    </div>
+    <div class="ec-strip reveal" id="strip" tabindex="0" aria-label="Room 313 — фоны"></div>
+    <p class="ec-hint" data-i18n="story.hint">Листайте вбок →</p>
+
+    <div class="ec-cast reveal" id="cast"></div>
+
+    <div class="ec-pair reveal">
+      <figure><img src="assets/story/cover.webp" alt="Room 313 — обложка" loading="lazy"><figcaption data-i18n="story.cover">Обложка</figcaption></figure>
+      <figure><img src="assets/story/cutscene.webp" alt="Room 313 — катсцена" loading="lazy"><figcaption data-i18n="story.cut">Катсцена премиум-ветки</figcaption></figure>
+    </div>
+    <!-- TODO: сетка «персонаж × эмоции» (в материалах пока только base-спрайты) -->
+  </section>
+
+  <!-- ============ casts ============ -->
+  <section class="block" id="casts">
+    <div class="sec-head reveal">
+      <p class="eyebrow" data-i18n="casts.eyebrow">Актёрский состав</p>
+      <h2 data-i18n="casts.title">У каждой истории — свой каст</h2>
+      <p data-i18n="casts.text">Фэнтези, морское королевство, вампиры — жанры разные, а персонажи одной новеллы всегда выглядят как одна компания: тот же свет, та же манера, тот же масштаб.</p>
+    </div>
+    <div class="ec-casts" id="casts-list"></div>
+  </section>
+
+  <!-- ============ library ============ -->
+  <section class="block" id="library">
+    <div class="sec-head reveal">
+      <p class="eyebrow" data-i18n="lib.eyebrow">Библиотека</p>
+      <h2 data-i18n="lib.title">29 новелл в одном стиле</h2>
+      <p data-i18n="lib.text">Триллеры, фэнтези, мистика и ромкомы. Обложки сделаны тем же флоу, что и сцены, поэтому витрина выглядит цельной.</p>
+    </div>
+    <div class="ec-covers" id="covers"></div>
+  </section>
+
+  <!-- ============ promo ============ -->
+  <section class="block" id="promo">
+    <div class="sec-head reveal">
+      <p class="eyebrow" data-i18n="promo.eyebrow">Промо</p>
+      <h2 data-i18n="promo.title">Обложки, которые двигаются</h2>
+      <p data-i18n="promo.text">Из статичной обложки — пятисекундная видеообложка для витрины. Из сцен и AI-видео — вертикальные промо-ролики для рекламы в 9:16 и 1:1, отдельно для мужской и женской аудитории.</p>
+    </div>
+    <div class="ec-vcovers" id="vcovers"></div>
+    <div class="ec-phones" id="phones"></div>
+  </section>
+
+  <!-- ============ result ============ -->
+  <section class="block" id="result">
+    <div class="sec-head reveal">
+      <p class="eyebrow" data-i18n="res.eyebrow">Результат</p>
+      <h2 data-i18n="res.title">Новеллы выходят потоком</h2>
+    </div>
+    <ul class="ec-results">
+      <li class="surface reveal"><b data-i18n="res.1t">Сценарий → ассеты без ручной раскладки</b><span data-i18n="res.1d">Агент пишет JSON, флоу генерирует и сразу называет файлы так, как ждёт data.json.</span></li>
+      <li class="surface reveal" style="--d:80ms"><b data-i18n="res.2t">Консистентные персонажи</b><span data-i18n="res.2d">Одно лицо во всех эмоциях и сценах — без перерисовки.</span></li>
+      <li class="surface reveal" style="--d:160ms"><b data-i18n="res.3t">Готовое промо</b><span data-i18n="res.3d">Видеообложки и ролики для рекламы из тех же ассетов.</span></li>
+    </ul>
+  </section>
+
+  <section class="contact">
+    <div class="beams" aria-hidden="true"></div>
+    <p class="eyebrow reveal" data-i18n="next.eyebrow">Следующий проект</p>
+    <h2 class="reveal">Virtual Gifts</h2>
+    <p class="reveal" data-i18n="next.text">Коллекция анимированных 3D-подарков для соцприложения: от единого стиля до пакета для разработчиков.</p>
+    <div class="contact-links reveal">
+      <a class="btn" href="/gift-catalog/" data-i18n="next.open">Открыть кейс →</a>
+      <a class="btn ghost" href="/projects.html" data-i18n="next.all">Все проекты</a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-row">
+    <span>© <span id="year">2026</span> Anton Egorov</span>
+    <span data-i18n="foot.note">Сделано без фреймворков · работает на любом устройстве</span>
+    <a href="/design-system.html" data-i18n="foot.ds">Дизайн-система</a>
+  </div>
+  <p class="wordmark" aria-hidden="true">anton</p>
+</footer>
+
+<script src="app.js?v=2"></script>
+</body>
+</html>
