@@ -7,7 +7,7 @@ EyeAnton.github.io (правятся в админке). Тексты и рас�
 |---|---|
 | Переадресация со старого адреса /emotions-club/ | `index.html` |
 | Картинки и видео кейса (страница грузит их по `/emotions-club/assets/…`) | `assets/` — файлы не переименовывать |
-| Сборка ассетов из сырой папки | `tools/build_assets.py` |
+| Сборка ассетов из сырой папки (`--full-covers` — только `covers/full/`: обложки 1024px для увеличения по клику на странице, без ffmpeg) | `tools/build_assets.py` |
 | Новеллы для плеера в портфолио (блок `novel`): все 28 → `assets/novels/<id>/` (novel.json + картинки; пропуски закрываются соседними фонами, тяжёлые фоны → JPEG через sips) и `assets/novels/library.json` (бесплатные — FREE в скрипте, порядок, жанр, minutes/choices/endings, thumb.jpg 360px). Одна новелла — `tools/build_novel.py`. Эмоции подхватятся сами, когда появятся `character_NN_<эмоция>` | `python3 -I tools/build_library.py [сырьё]` |
 
 Сырьё: `C:\Users\lerit\Yandex.Disk\Портфолио_SDG\2026\Portfolio\Emotions Club` (`.sources.json` — исходные пути в SDG).

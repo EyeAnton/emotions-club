@@ -1,7 +1,8 @@
 """Build web assets for the case page from the raw portfolio folder.
 
-Usage: python tools/build_assets.py [SRC_DIR]
+Usage: python tools/build_assets.py [SRC_DIR] [--full-covers]
 Default SRC_DIR is the Yandex.Disk portfolio folder. Needs ffmpeg (FFMPEG env var or on PATH).
+--full-covers: only covers/full/ — the covers at full size for the zoom on the case page (copied, no ffmpeg).
 Files Yandex.Disk is still downloading can't be read yet; they are retried until they open.
 """
 import os
@@ -11,7 +12,8 @@ import sys
 import time
 from pathlib import Path
 
-SRC = Path(sys.argv[1] if len(sys.argv) > 1 else
+ARGS = [a for a in sys.argv[1:] if not a.startswith("--")]
+SRC = Path(ARGS[0] if ARGS else
            r"C:\Users\lerit\Yandex.Disk\Портфолио_SDG\2026\Portfolio\Emotions Club")
 OUT = Path(__file__).resolve().parent.parent / "assets"
 FFMPEG = os.environ.get("FFMPEG") or shutil.which("ffmpeg") or \
@@ -64,7 +66,24 @@ def webp(src, dst, width, q=78):
     ff(src, dst, "-vf", f"scale='min({width},iw)':-2", "-c:v", "libwebp", "-quality", str(q), "-frames:v", "1")
 
 
+def full_covers():
+    """covers/full/<slug>.webp — the raw 1024px webp as is (the grid and the belt show the 480px ones)."""
+    for t in COVERS:
+        dst = OUT / "covers" / "full" / f"{slug(t)}.webp"
+        # "Share the Bed-" on Windows is "Share the Bed?" where the name may hold a question mark
+        src = next((p for p in (SRC / f"cover ({t}).webp", SRC / f"cover ({t.replace('-', '?')}).webp") if p.exists()), SRC / f"cover ({t}).webp")
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        if src.exists() and readable(src):
+            shutil.copyfile(src, dst)
+            print("ok", dst.relative_to(OUT), f"{dst.stat().st_size // 1024} KB")
+        else:
+            webp(SRC / f"cover ({t}).jpg", dst, 1024, 82)
+
+
 def main():
+    if "--full-covers" in sys.argv:
+        return full_covers()
+    full_covers()
     s = slug(STORY)
     for sc in STORY_SCENES:
         webp(SRC / f"scene_{sc} ({STORY}).jpg", OUT / "story" / f"scene_{sc}.webp", 960)
