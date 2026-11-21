@@ -9,7 +9,9 @@ EyeAnton.github.io (правятся в админке). Тексты и рас�
 | Картинки и видео кейса (страница грузит их по `/emotions-club/assets/…`) | `assets/` — файлы не переименовывать |
 | Сборка ассетов из сырой папки (`--full-covers` — только `covers/full/`: обложки 1024px для увеличения по клику на странице, без ffmpeg) | `tools/build_assets.py` |
 | Новеллы для плеера в портфолио (блок `novel`): все 28 → `assets/novels/<id>/` (novel.json + картинки; пропуски закрываются соседними фонами, тяжёлые фоны → JPEG через sips) и `assets/novels/library.json` (бесплатные — FREE в скрипте, порядок, жанр, minutes/choices/endings, thumb.jpg 360px). Одна новелла — `tools/build_novel.py`. Эмоции подхватятся сами, когда появятся `character_NN_<эмоция>` | `python3 -I tools/build_library.py [сырьё]` |
+| Тесты (без сырья и сети) | `python3 -m unittest discover -s tests` |
 
-Сырьё: `C:\Users\lerit\Yandex.Disk\Портфолио_SDG\2026\Portfolio\Emotions Club` (`.sources.json` — исходные пути в SDG).
+Подробнее — `CODEMAP.md`. Сырьё: `~/Yandex.Disk/Портфолио_SDG/2026/Portfolio/Emotions Club` или `$EMC_RAW`
+(`.sources.json` — исходные пути в SDG).
 Ждём от пользователя: JSON с маркерами из файла генерации ComfyUI (найдёт сам), спрайты эмоций (в сырье только `_base`),
 видео пайплайна — добавлять новыми блоками в админке.
