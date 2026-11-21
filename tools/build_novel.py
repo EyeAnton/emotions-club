@@ -17,6 +17,7 @@ import json
 import re
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 
 OUT = Path(__file__).resolve().parent.parent / "assets" / "novels"
@@ -79,6 +80,9 @@ def build(json_path, images_dir=None, title=None, genre="thriller", id=None, str
     tale = next(iter(data["tales"].values())) if "tales" in data else data
     title = title or tale["id"].replace("_", " ").title()
     nid = id or tale["id"]
+    # the id becomes a folder that is wiped below: never let it point outside assets/novels/
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]*", nid or ""):
+        raise ValueError(f"bad novel id {nid!r}: letters, digits, _ and - only")
     folder = Path(images_dir) if images_dir else src.parent
     out = OUT / nid
     if out.exists():
@@ -199,7 +203,6 @@ def build(json_path, images_dir=None, title=None, genre="thriller", id=None, str
         memo[k] = w
         return w
 
-    import sys
     sys.setrecursionlimit(max(10000, len(screens) * 4))
     size = sum(f.stat().st_size for f in out.iterdir()) // 1024
     summary = {"id": nid, "title": display or title, "screens": len(screens), "images": len(files), "kb": size, "cover": cover,
