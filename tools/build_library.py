@@ -1,6 +1,6 @@
 """Build every Emotions Club novel for the portfolio player and the library it opens with.
 
-Usage: python3 tools/build_library.py [RAW_DIR]   (default: ~/Downloads/Portfolio/Emotions Club)
+Usage: python3 tools/build_library.py [RAW_DIR]   (default: $EMC_RAW, else ~/Downloads/Portfolio/Emotions Club)
 
 Each novel → assets/novels/<id>/ (tools/build_novel.py build(), images looked up strictly by the " (<title>)" suffix),
 plus thumb.jpg — the cover at 360px (sips, macOS). assets/novels/library.json lists them for the player: the free ones
@@ -8,6 +8,7 @@ first (they can be played), then the premium ones (a badge for now) from the sho
 playthrough at 200 words a minute.
 """
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -15,7 +16,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build_novel import OUT, build  # noqa: E402
 
-RAW = Path(sys.argv[1] if len(sys.argv) > 1 else Path.home() / "Downloads" / "Portfolio" / "Emotions Club")
+RAW = Path(sys.argv[1] if len(sys.argv) > 1 else os.environ.get("EMC_RAW") or
+           Path.home() / "Downloads" / "Portfolio" / "Emotions Club")
 FREE = ["room_313", "talk_on_the_plane", "stuck_in_the_elevator", "moonlight_heist"]
 # id (= the raw JSON name): title in the raw image names, title on the site, genre
 NOVELS = {

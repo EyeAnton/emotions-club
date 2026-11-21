@@ -1,7 +1,8 @@
 """Build web assets for the case page from the raw portfolio folder.
 
 Usage: python tools/build_assets.py [SRC_DIR] [--full-covers]
-Default SRC_DIR is the Yandex.Disk portfolio folder. Needs ffmpeg (FFMPEG env var or on PATH).
+Default SRC_DIR: $EMC_RAW, else ~/Yandex.Disk/Портфолио_SDG/2026/Portfolio/Emotions Club.
+Needs ffmpeg (FFMPEG env var or on PATH).
 --full-covers: only covers/full/ — the covers at full size for the zoom on the case page (copied, no ffmpeg).
 Files Yandex.Disk is still downloading can't be read yet; they are retried until they open.
 """
@@ -13,11 +14,10 @@ import time
 from pathlib import Path
 
 ARGS = [a for a in sys.argv[1:] if not a.startswith("--")]
-SRC = Path(ARGS[0] if ARGS else
-           r"C:\Users\lerit\Yandex.Disk\Портфолио_SDG\2026\Portfolio\Emotions Club")
+SRC = Path(ARGS[0] if ARGS else os.environ.get("EMC_RAW") or
+           Path.home() / "Yandex.Disk" / "Портфолио_SDG" / "2026" / "Portfolio" / "Emotions Club")
 OUT = Path(__file__).resolve().parent.parent / "assets"
-FFMPEG = os.environ.get("FFMPEG") or shutil.which("ffmpeg") or \
-    r"C:\Users\lerit\AppData\Local\Screenforge\app-0.1.0\resources\ffmpeg\win32-x64\ffmpeg.exe"
+FFMPEG = os.environ.get("FFMPEG") or shutil.which("ffmpeg") or "ffmpeg"
 
 STORY = "Room 313"
 STORY_SCENES = ["01_a", "01_b", "02_a", "02_b", "02_c", "03_a", "04_a", "04_b", "04_c", "04_d", "04_e",
